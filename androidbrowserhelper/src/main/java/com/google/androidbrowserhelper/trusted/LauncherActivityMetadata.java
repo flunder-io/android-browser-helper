@@ -149,6 +149,8 @@ public class LauncherActivityMetadata {
         int shareTargetId = metaData.getInt(METADATA_SHARE_TARGET, 0);
         shareTarget = shareTargetId == 0 ? null : resources.getString(shareTargetId);
         fallbackStrategyType = metaData.getString(METADATA_FALLBACK_STRATEGY);
+        int shareTargetId = metaData.getInt(METADATA_SHARE_TARGET, 0);
+        shareTarget = shareTargetId == 0 ? null : resources.getString(shareTargetId);
     }
 
     /**
