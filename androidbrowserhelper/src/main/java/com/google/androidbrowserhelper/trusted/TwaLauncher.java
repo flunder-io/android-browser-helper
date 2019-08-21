@@ -26,6 +26,7 @@ import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.browser.customtabs.CustomTabsService;
 import androidx.browser.customtabs.CustomTabsServiceConnection;
 import androidx.browser.customtabs.CustomTabsSession;
+import androidx.browser.trusted.TrustedWebActivityIntent;
 import androidx.browser.trusted.TrustedWebActivityIntentBuilder;
 import androidx.core.content.ContextCompat;
 
@@ -226,9 +227,10 @@ public class TwaLauncher {
             return;  // Destroyed while preparing the splash screen (e.g. user closed the app).
         }
         Log.d(TAG, "Launching Trusted Web Activity.");
-        Intent intent = builder.build(mSession).getIntent();
-        FocusActivity.addToIntent(intent, mContext);
-        ContextCompat.startActivity(mContext, intent, null);
+
+        TrustedWebActivityIntent twaIntent = builder.build(mSession);
+        FocusActivity.addToIntent(twaIntent.getIntent(), mContext);
+        twaIntent.launchTrustedWebActivity(mContext);
 
         // Remember who we connect to as the package that is allowed to delegate notifications
         // to us.

@@ -89,6 +89,12 @@ public class LauncherActivityMetadata {
     private static final String METADATA_FILE_PROVIDER_AUTHORITY =
             "android.support.customtabs.trusted.FILE_PROVIDER_AUTHORITY";
 
+    /**
+     * Reference to a string resource with the web share target JSON. See description of
+     * {@link LauncherActivity} for more details.
+     */
+    private static final String METADATA_SHARE_TARGET =
+            "android.support.customtabs.trusted.METADATA_SHARE_TARGET";
 
     /**
      * The domains to be validated, as part of the Digital Asset Links validation
@@ -108,6 +114,7 @@ public class LauncherActivityMetadata {
     @Nullable public final String fileProviderAuthority;
     public final int splashScreenFadeOutDurationMillis;
     @Nullable public final List<String> additionalTrustedOrigins;
+    @Nullable public final String shareTarget;
 
     private LauncherActivityMetadata(@NonNull Bundle metaData, @NonNull Resources resources) {
         defaultUrl = metaData.getString(METADATA_DEFAULT_URL);
@@ -130,6 +137,8 @@ public class LauncherActivityMetadata {
         } else {
             additionalTrustedOrigins = null;
         }
+        int shareTargetId = metaData.getInt(METADATA_SHARE_TARGET, 0);
+        shareTarget = shareTargetId == 0 ? null : resources.getString(shareTargetId);
     }
 
     /**
