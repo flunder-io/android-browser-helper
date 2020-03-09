@@ -36,6 +36,8 @@ import androidx.browser.trusted.sharing.ShareData;
 import androidx.browser.trusted.sharing.ShareTarget;
 import androidx.core.content.ContextCompat;
 
+import com.google.androidbrowserhelper.trusted.splashscreens.PwaWrapperSplashScreenStrategy;
+
 /**
  * A convenience class to make using Trusted Web Activities easier. You can extend this class for
  * basic modifications to the behaviour.
@@ -97,6 +99,8 @@ public class LauncherActivity extends AppCompatActivity {
 
     private static final String BROWSER_WAS_LAUNCHED_KEY =
             "android.support.customtabs.trusted.BROWSER_WAS_LAUNCHED_KEY";
+
+    private static final String FALLBACK_TYPE_WEBVIEW = "webview";
 
     /** We only want to show the update prompt once per instance of this application. */
     private static boolean sChromeVersionChecked;
@@ -282,6 +286,16 @@ public class LauncherActivity extends AppCompatActivity {
     }
 
     protected TwaLauncher.FallbackStrategy getFallbackStrategy() {
+        if (FALLBACK_TYPE_WEBVIEW.equalsIgnoreCase(mMetadata.fallbackStrategyType)) {
+            return (context, twaBuilder, providerPackage, completionCallback) -> {
+                Intent intent = WebViewFallbackActivity.createLaunchIntent(LauncherActivity.this,
+                        twaBuilder.getUri(), LauncherActivityMetadata.parse(LauncherActivity.this));
+                context.startActivity(intent);
+                if (completionCallback != null) {
+                    completionCallback.run();
+                }
+            };
+        }
         return TwaLauncher.CCT_FALLBACK_STRATEGY;
     }
 
